@@ -8,6 +8,7 @@ import { MyContext } from "./components/MyContext";
 
 import Router from "next/router";
 import { BeatLoader } from "react-spinners";
+import MenuIcon from '@mui/icons-material/Menu';
 
 export default function Home() {
   const [text, setText] = useState("");
@@ -16,8 +17,8 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   const texts = JSON.parse(localStorage.getItem("texts")) || [];
-  if(texts.length == 0) {
-    const newChat = {chat: `chat_${Date.now()}`, texts: []};
+  if (texts.length == 0) {
+    const newChat = { chat: `chat_${Date.now()}`, texts: [] };
     texts.push(newChat);
     window.localStorage.setItem("texts", JSON.stringify(texts));
   }
@@ -26,6 +27,7 @@ export default function Home() {
   const [currentChat, setCurrentChat] = useState(initialChats[0]);
 
   const bottomSection = useRef(null);
+  const sideBarRef = useRef(null)
 
   useEffect(() => {
     bottomSection.current.scroll({
@@ -50,9 +52,15 @@ export default function Home() {
         setCurrentChat,
         chats,
         setChats,
+        sideBarRef
       }}
     >
       <div className="flex">
+        <div className="cursor-pointer absolute z-10 p-4 md:hidden " onClick={() => {
+          sideBarRef.current.classList.replace('-translate-x-full', 'translate-x-0')
+        }}>
+          <MenuIcon className="" />
+        </div>
         <Sidebar />
         <div className="md:w-5/6 w-full h-screen overflow-scroll relative">
           <div className="w-full h-screen flex flex-col-reverse justify-between">
@@ -64,7 +72,7 @@ export default function Home() {
               ref={bottomSection}
               id="bottom-section"
             >
-              <div className="md:w-1/2 w-3/4">
+              <div className="md:w-1/2 w-3/4 md:mt-0 mt-5">
                 {allTexts &&
                   allTexts.map((session, index) => (
                     <div key={index}>
