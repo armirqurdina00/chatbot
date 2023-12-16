@@ -16,6 +16,11 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   const texts = JSON.parse(localStorage.getItem("texts")) || [];
+  if(texts.length == 0) {
+    const newChat = {chat: `chat_${Date.now()}`, texts: []};
+    texts.push(newChat);
+    window.localStorage.setItem("texts", JSON.stringify(texts));
+  }
   const initialChats = texts.map((t) => t.chat);
   const [chats, setChats] = useState(initialChats);
   const [currentChat, setCurrentChat] = useState(initialChats[0]);

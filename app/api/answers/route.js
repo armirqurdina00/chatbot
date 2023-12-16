@@ -15,12 +15,6 @@ export async function POST(request) {
   };
 
   try {
-    return NextResponse.json(
-      { content: `This is a response ${Date.now()}` },
-      {
-        status: 200,
-      }
-    );
     const response = await axios.post(url, data, {
       headers: { Authorization: `Bearer ${token}` },
     });

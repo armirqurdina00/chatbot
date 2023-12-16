@@ -1,6 +1,6 @@
 import { TextField, IconButton } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { MyContext } from "./MyContext";
 
 // const url = 'https://api-v2.longshot.ai/custom/api/generate/factgpt/custom';
@@ -16,6 +16,12 @@ const SearchBar = () => {
     setLoading,
     currentChat,
   } = useContext(MyContext);
+
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [allTexts])
 
   const storeTextsToCache = (texts) => {
     const storedTexts = JSON.parse(localStorage.getItem("texts")) || [];
@@ -67,13 +73,15 @@ const SearchBar = () => {
 
   const SendButton = () => (
     <IconButton onClick={onFormSubmit}>
-      <SendIcon />
+      <SendIcon className="text-black" />
     </IconButton>
   );
 
   return (
     <form onSubmit={onFormSubmit} className="md:w-1/2 w-3/4">
       <TextField
+        inputRef={inputRef}
+        autoFocus
         id="outlined-basic"
         label="Message chatbot"
         variant="outlined"
